@@ -13,6 +13,7 @@ import {
   liftHoverVariants,
 } from "@/components/animations"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
+import HomeNewsPreview from "@/components/HomeNewsPreview"
 
 export default function Home() {
   const upcomingShows = [
@@ -149,6 +150,8 @@ export default function Home() {
           </div>
         </FadeIn>
       </section>
+
+      <HomeNewsPreview />
 
       {/* About Preview */}
       <section className="py-20 px-4 sm:px-8 bg-primary text-primary-foreground">
