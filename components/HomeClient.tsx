@@ -33,6 +33,7 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ latestEntries, upcomingShows, galleryImages }: HomeClientProps) {
+  console.log('DEBUG: latestEntries', latestEntries);
   return (
     <div className="min-h-screen">
       {/* Hero Section */}

@@ -39,6 +39,19 @@ export default {
       name: 'author',
       title: 'Author',
       type: 'string'
+    },
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+    },
+    {
+      name: 'mainImage',
+      title: 'Main Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
     }
-  ]
+  ],
 }

@@ -2,7 +2,7 @@ import HomeClient from "@/components/HomeClient"
 import { client } from "@/lib/sanityClient"
 import { HomeNewsPreviewProps } from "@/components/HomeNewsPreview"
 
-const newsQuery = `*[_type == "newsArticle"] | order(publishedAt desc) {
+const newsQuery = `*[_type == "post"] | order(publishedAt desc) {
   _id,
   title,
   slug,
@@ -62,7 +62,7 @@ async function fetchLatestEntries() {
 export default async function Home() {
   // Data fetching (server-side)
   async function fetchLatestEntries() {
-    const newsQuery = `*[_type == "newsArticle"] | order(publishedAt desc) {
+    const newsQuery = `*[_type == "post"] | order(publishedAt desc) {
       _id,
       title,
       slug,

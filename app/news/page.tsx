@@ -4,7 +4,7 @@ import { Calendar, ArrowRight } from "lucide-react"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { client } from "../../lib/sanityClient"
 
-const query = `*[_type == "newsArticle"] | order(publishedAt desc) {
+const query = `*[_type == "post"] | order(publishedAt desc) {
   _id,
   title,
   slug,
