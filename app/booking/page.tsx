@@ -96,7 +96,7 @@ export default function Booking() {
       <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-background">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <h1 className="text-5xl font-bold">Book Me</h1>
-          <p className="text-xl text-muted-foreground">Thank you for your interest in Booking Lil Moiss Detroit! Please complete this form in full to request an official booking for Lil Miss Detroit. A member of our team will follow up once the submission is received.
+          <p className="text-xl text-muted-foreground">Thank you for your interest in Booking Lil Miss Detroit! Please complete this form in full to request an official booking for Lil Miss Detroit. A member of our team will follow up once the submission is received.
             <br />
             <b>NOTE: ANY INCOMPLETE SUBMITTED REQUEST WILL NOT BE CONSIDERED. LIL MISS DETROIT TEAM DOES NOT PUT HER ON THE ROAD WITHOUT ALL DETAILS, INCLUDING ADDRESS, VERIFIED AND CONFIRMED.</b> 
           </p>
@@ -124,8 +124,9 @@ export default function Booking() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Event Type *</label>
+                    <label htmlFor="eventType" className="block text-sm font-semibold mb-2">Event Type *</label>
                     <select
+                      id="eventType"
                       name="eventType"
                       value={formData.eventType}
                       onChange={handleChange}
@@ -144,8 +145,9 @@ export default function Booking() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Date *</label>
+                    <label htmlFor="date" className="block text-sm font-semibold mb-2">Date *</label>
                     <input
+                      id="date"
                       type="date"
                       name="date"
                       value={formData.date}
@@ -155,8 +157,9 @@ export default function Booking() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold mb-2">Duration *</label>
+                    <label htmlFor="duration" className="block text-sm font-semibold mb-2">Duration *</label>
                     <select
+                      id="duration"
                       name="duration"
                       value={formData.duration}
                       onChange={handleChange}
@@ -186,8 +189,9 @@ export default function Booking() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold mb-2">Budget Range</label>
+                  <label htmlFor="budget" className="block text-sm font-semibold mb-2">Budget Range</label>
                   <select
+                    id="budget"
                     name="budget"
                     value={formData.budget}
                     onChange={handleChange}
@@ -258,7 +262,7 @@ export default function Booking() {
                       "Is your venue more than 40 miles from Chicago?",
                       "Schools Email For Bookings",
                     ].map((option) => (
-                      <label key={option} className="inline-flex items-center gap-2">
+                      <label key={option} className="flex items-center gap-2">
                         <input
                           type="checkbox"
                           name="bookingOptions"
