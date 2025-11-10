@@ -8,7 +8,24 @@ import { Footer } from "@/components/footer"
 import { Download, Send } from "lucide-react"
 
 export default function Booking() {
-  const [formData, setFormData] = useState({
+  interface FormData {
+    eventName: string
+    eventType: string
+    date: string
+    location: string
+    budget: string
+    duration: string
+    name: string
+    email: string
+    phone: string
+    message: string
+    bookingOptions: string[]
+    songRequests: string
+    promoterName: string
+    socialMediaHandles: string
+  }
+
+  const [formData, setFormData] = useState<FormData>({
     eventName: "",
     eventType: "",
     date: "",
@@ -19,6 +36,10 @@ export default function Booking() {
     email: "",
     phone: "",
     message: "",
+    bookingOptions: [],
+    songRequests: "",
+    promoterName: "",
+    socialMediaHandles: "",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -28,8 +49,9 @@ export default function Booking() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    // Here you can handle the form submission including the new fields
     console.log("Form submitted:", formData)
-    // Handle form submission
+    // For example, send formData to an API or backend service
   }
 
   return (
@@ -40,7 +62,10 @@ export default function Booking() {
       <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-background">
         <div className="max-w-4xl mx-auto text-center space-y-4">
           <h1 className="text-5xl font-bold">Book Me</h1>
-          <p className="text-xl text-muted-foreground">Inquiry about booking me for your next event</p>
+          <p className="text-xl text-muted-foreground">Thank you for your interest in Booking Lil Moiss Detroit! Please complete this form in full to request an official booking for Lil Miss Detroit. A member of our team will follow up once the submission is received.
+            <br />
+            <b>NOTE: ANY INCOMPLETE SUBMITTED REQUEST WILL NOT BE CONSIDERED. LIL MISS DETROIT TEAM DOES NOT PUT HER ON THE ROAD WITHOUT ALL DETAILS, INCLUDING ADDRESS, VERIFIED AND CONFIRMED.</b> 
+          </p>
         </div>
       </section>
 
@@ -192,6 +217,76 @@ export default function Booking() {
                     onChange={handleChange}
                     placeholder="Tell us more about your event, special requests, or questions..."
                     rows={5}
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                {/* New Fields */}
+                <fieldset className="border-t border-border pt-6">
+                  <legend className="text-lg font-bold mb-4">Booking Options</legend>
+                  <div className="space-y-2">
+                    {["Solo Performance", "Extended Performance", "Full Day Event", "Custom Setlist"].map((option) => (
+                      <label key={option} className="inline-flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          name="bookingOptions"
+                          value={option}
+                          checked={formData.bookingOptions.includes(option)}
+                          onChange={(e) => {
+                            const { checked, value } = e.target
+                            setFormData((prev) => {
+                              const options = new Set(prev.bookingOptions)
+                              if (checked) options.add(value)
+                              else options.delete(value)
+                              return { ...prev, bookingOptions: Array.from(options) }
+                            })
+                          }}
+                          className="form-checkbox"
+                          aria-describedby="bookingOptionsHelp"
+                          required={formData.bookingOptions.length === 0}
+                        />
+                        <span>{option}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <p id="bookingOptionsHelp" className="text-xs text-muted-foreground mt-1">Please select at least one booking option.</p>
+                </fieldset>
+
+                <div className="mt-6">
+                  <label className="block text-sm font-semibold mb-2" htmlFor="songRequests">Song Requests</label>
+                  <textarea
+                    id="songRequests"
+                    name="songRequests"
+                    value={formData.songRequests}
+                    onChange={handleChange}
+                    placeholder="List any song requests here"
+                    rows={4}
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <label className="block text-sm font-semibold mb-2" htmlFor="promoterName">Promoter Name</label>
+                  <input
+                    type="text"
+                    id="promoterName"
+                    name="promoterName"
+                    value={formData.promoterName}
+                    onChange={handleChange}
+                    placeholder="Name of promoter or agency"
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
+                <div className="mt-6">
+                  <label className="block text-sm font-semibold mb-2" htmlFor="socialMediaHandles">Social Media Handles</label>
+                  <input
+                    type="text"
+                    id="socialMediaHandles"
+                    name="socialMediaHandles"
+                    value={formData.socialMediaHandles}
+                    onChange={handleChange}
+                    placeholder="e.g., @instagram, @twitter"
                     className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
                   />
                 </div>
