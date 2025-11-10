@@ -3,6 +3,7 @@ import { Footer } from "@/components/footer"
 import { Calendar, ArrowRight } from "lucide-react"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { client } from "../../lib/sanityClient"
+import Link from "next/link"
 
 const query = `*[_type == "post"] | order(publishedAt desc) {
   _id,
@@ -10,8 +11,17 @@ const query = `*[_type == "post"] | order(publishedAt desc) {
   slug,
   publishedAt,
   excerpt,
-  category
+  category,
+  mainImage{
+    asset->{
+      _id,
+      url
+    },
+    alt
+  }
 }`
+
+import { urlFor } from "../../lib/sanityClient"
 
 export default async function News() {
   const news = await client.fetch(query)
@@ -19,7 +29,7 @@ export default async function News() {
   return (
     <div className="min-h-screen">
       <Header />
-
+ 
       {/* Hero */}
       <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-background">
         <div className="max-w-4xl mx-auto text-center space-y-4">
@@ -29,7 +39,7 @@ export default async function News() {
           </p>
         </div>
       </section>
-
+ 
       {/* Featured Post */}
       {news.length > 0 && (
         <section className="py-12 px-4 sm:px-6 lg:px-8">
@@ -37,7 +47,15 @@ export default async function News() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
                 <AspectRatio ratio={16 / 9} className="mb-6 rounded-lg overflow-hidden shadow-lg">
-                  <div className="w-full h-full bg-primary/20"></div>
+                  {news[0].mainImage?.asset ? (
+                    <img
+                      src={urlFor(news[0].mainImage).url()}
+                      alt={news[0].mainImage.alt || news[0].title}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-primary/20"></div>
+                  )}
                 </AspectRatio>
                 <div className="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4">
                   {news[0].category}
@@ -50,10 +68,11 @@ export default async function News() {
                   </div>
                 </div>
                 <p className="text-lg text-muted-foreground mb-6">{news[0].excerpt}</p>
-                <button className="flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all">
+                
+                <Link href={`/news/${news[0].slug.current}`} className="flex items-center gap-2 text-primary font-semibold hover:gap-3 transition-all">
                   Read Full Story
                   <ArrowRight size={20} />
-                </button>
+                </Link>
               </div>
               <div className="p-6 bg-card rounded-lg border border-border h-fit">
                 <h3 className="font-bold mb-4">Subscribe to Updates</h3>
