@@ -47,11 +47,45 @@ export default function Booking() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you can handle the form submission including the new fields
-    console.log("Form submitted:", formData)
-    // For example, send formData to an API or backend service
+    setIsSubmitting(true)
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
+      alert('Booking request submitted successfully!')
+      setFormData({
+        eventName: "",
+        eventType: "",
+        date: "",
+        location: "",
+        budget: "",
+        duration: "",
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+        bookingOptions: [],
+        songRequests: "",
+        promoterName: "",
+        socialMediaHandles: "",
+      })
+    } catch (error) {
+      console.error('Failed to submit booking:', error)
+      alert('Failed to submit booking request. Please try again later.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -209,23 +243,21 @@ export default function Booking() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-sm font-semibold mb-2">Additional Details</label>
-                  <textarea
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell us more about your event, special requests, or questions..."
-                    rows={5}
-                    className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
-                </div>
+                {/* Additional Details moved down */}
 
                 {/* New Fields */}
                 <fieldset className="border-t border-border pt-6">
                   <legend className="text-lg font-bold mb-4">Booking Options</legend>
                   <div className="space-y-2">
-                    {["Solo Performance", "Extended Performance", "Full Day Event", "Custom Setlist"].map((option) => (
+                    {[
+                      "Walk Through (30-45 mins) $4,000",
+                      "Appearance / Hosting Only (1.5 hours) – $5,000",
+                      "Appearance + One Song $6,000",
+                      "Appearance + Three Songs $8,000",
+                      "Live Performance (5 Song Set) – $10,000",
+                      "Is your venue more than 40 miles from Chicago?",
+                      "Schools Email For Bookings",
+                    ].map((option) => (
                       <label key={option} className="inline-flex items-center gap-2">
                         <input
                           type="checkbox"
@@ -291,12 +323,29 @@ export default function Booking() {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-sm font-semibold mb-2">Additional Details</label>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us more about your event, special requests, or questions..."
+                    rows={5}
+                    className="w-full px-4 py-2 border border-border rounded-lg bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  className="w-full px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className={`w-full px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2 ${
+                    isSubmitting
+                      ? 'bg-primary/50 text-primary-foreground cursor-not-allowed'
+                      : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  }`}
                 >
                   <Send size={20} />
-                  Send Booking Inquiry
+                  {isSubmitting ? 'Submitting...' : 'Send Booking Inquiry'}
                 </button>
               </form>
             </div>
@@ -355,19 +404,25 @@ export default function Booking() {
                 <ul className="space-y-3 text-sm">
                   <li className="flex items-start gap-2">
                     <span className="text-primary font-bold">•</span>
-                    <span>Solo Performance (1-2 hrs)</span>
+                    <span>Walk ThroPerformance Packagesugh (30-45 mins) $4,000</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary font-bold">•</span>
-                    <span>Extended Performance (2-4 hrs)</span>
+                    <span>Appearance / Hosting Only (1.5 hours) – $5,000</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary font-bold">•</span>
-                    <span>Full Day Event (6-8 hrs)</span>
+                    <span>Appearance + One Song $6,000</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-primary font-bold">•</span>
-                    <span>Custom Setlist</span>
+                    <span>Appearance + Three Songs $8,000</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-primary font-bold">•</span>
+                    <span>Live Performance (5 Song Set) – $10,000</span>
+                  </li>
+                  <li className="flex items-start gap-2">
                   </li>
                 </ul>
               </div>
